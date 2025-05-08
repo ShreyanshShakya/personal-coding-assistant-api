@@ -1,38 +1,21 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from app.features.suggest_code import suggest_code
 from app.features.explain_code import explain_code
 from app.features.detect_errors import detect_errors_from_code
 from app.features.refactor_code import suggest_refactoring
 from app.features.learning_mode import provide_tips
-from fastapi.openapi.models import APIKey
-from fastapi.openapi.utils import get_openapi
 
-app = FastAPI()  # Define the app first
+app = FastAPI()
 
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi(
-        title="Personal Coding Assistant API",
-        version="1.0.0",
-        description="An API for code suggestions, explanations, error detection, refactoring, and learning tips.",
-        routes=app.routes,
-    )
-    openapi_schema["components"]["securitySchemes"] = {
-        "APIKeyHeader": {
-            "type": "apiKey",
-            "name": "x-api-key",
-            "in": "header",
-        }
-    }
-    for path in openapi_schema["paths"].values():
-        for method in path.values():
-            method["security"] = [{"APIKeyHeader": []}]
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Personal Coding Assistant API!"}
 
-app.openapi = custom_openapi  # Assign the custom OpenAPI schema after defining the app
+@app.get("/favicon.ico")
+def favicon():
+    return {"message": "No favicon available"}
 
 class CodeRequest(BaseModel):
     code: str
