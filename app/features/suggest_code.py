@@ -9,6 +9,14 @@ def suggest_code(partial_code):
         chat_completion = client.chat.completions.create(
             messages=[
                 {
+                    "role": "system",
+                    "content": (
+                        "You are an expert Python code reviewer with 7+ years of professional software development "
+                        "experience. Your mission is to generate code suggestions based on partial Python code, "
+                        "focusing on code quality, maintainability, and Pythonic solutions."
+                    ),
+                },
+                {
                     "role": "user",
                     "content": f"Complete the following code:\n{partial_code}",
                 }
