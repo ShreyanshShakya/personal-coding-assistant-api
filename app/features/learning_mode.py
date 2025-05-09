@@ -15,6 +15,14 @@ def provide_tips(code_snippet):
     chat_completion = client.chat.completions.create(
         messages=[
             {
+                "role": "system",
+                "content": (
+                    "You are an expert Python code reviewer with 7+ years of professional software development "
+                    "experience. Your mission is to provide coding tips and best practices for Python code, "
+                    "focusing on code quality, maintainability, and Pythonic solutions."
+                ),
+            },
+            {
                 "role": "user",
                 "content": f"Provide coding tips and best practices for the following code:\n{code_snippet}",
             }
@@ -24,6 +32,3 @@ def provide_tips(code_snippet):
     )
     
     return chat_completion.choices[0].message.content
-
-
-    
