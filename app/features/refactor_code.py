@@ -40,6 +40,14 @@ def suggest_refactoring(code_snippet):
         chat_completion = client.chat.completions.create(
             messages=[
                 {
+                    "role": "system",
+                    "content": (
+                        "You are an expert Python code reviewer with 7+ years of professional software development "
+                        "experience. Your mission is to suggest refactoring improvements for Python code, focusing on "
+                        "code quality, maintainability, and scalability."
+                    ),
+                },
+                {
                     "role": "user",
                     "content": f"Suggest refactoring improvements for the following code:\n{code_snippet}",
                 }
