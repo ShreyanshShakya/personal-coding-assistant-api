@@ -1,5 +1,6 @@
 import ast
 import subprocess
+from utils.groq_client import get_groq_client
 
 def detect_errors(file_path):
     """
@@ -72,6 +73,14 @@ def suggest_fixes(error_report):
     chat_completion = client.chat.completions.create(
         messages=[
             {
+                "role": "system",
+                "content": (
+                    "You are an expert Python code reviewer with 7+ years of professional software development "
+                    "experience. Your mission is to analyze, review, and suggest fixes for Python code errors, "
+                    "focusing on code quality, best practices, efficiency, scalability, readability, and maintainability."
+                ),
+            },
+            {
                 "role": "user",
                 "content": f"Suggest fixes for the following errors:\n{error_report}",
             }
@@ -81,4 +90,3 @@ def suggest_fixes(error_report):
     )
     
     return chat_completion.choices[0].message.content
-
